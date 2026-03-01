@@ -1,0 +1,30 @@
+services:
+  # Главный сервис с nginx и объединением всех имеющихся сервисов
+  nginx:
+    image: nginx:alpine
+    container_name: nona-nginx
+    ports:
+    - "80:80"
+    environment:
+    - SERVER_NAME=${SERVER_NAME}
+    - COOL_PROJECT_HOST=${COOL_PROJECT_HOST}
+    - COOL_PROJECT_PORT=${COOL_PROJECT_PORT}
+    volumes:
+    - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+    - ./public:/usr/share/nginx/html:ro
+    command:
+      /bin/sh -c "envsubst '$${SERVER_NAME} $${COOL_PROJECT_HOST} $${COOL_PROJECT_PORT}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    networks:
+      - nonanet
+    depends_on:
+      - cool_project
+  
+  # Заглушка пока я не сделаю нормальный сторонний проект
+  cool_project:
+    image: strm/helloworld-http # Вставить докер имейдж моего проекта
+    networks:
+      - nonanet
+
+networks:
+  nonanet:
+    driver: bridge
