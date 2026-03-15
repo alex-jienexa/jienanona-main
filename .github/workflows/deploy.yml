@@ -23,7 +23,7 @@ jobs:
           script: |
             cd /opt/project
 
-            echo "$ENV_FILE" > .env
+            echo "${{ secrets.ENV_FILE }}" > .env
             
             git pull origin main
 
