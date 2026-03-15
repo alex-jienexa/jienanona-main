@@ -21,6 +21,15 @@ services:
       # Сервис не запустится когда не запустятся эти сервисы - лучше писать все сторонние проекты
       - cool_project
   
+  foundry:
+    image: node:25
+    working_dir: /app
+    command: node main.js --dataPath=/data
+    volumes:
+      # Данные хранятся на сервере
+      - /root/foundry/app:/app
+      - /root/foundry/data:/data
+
   # Заглушка пока я не сделаю нормальный сторонний проект
   cool_project:
     image: strm/helloworld-http # Вставить докер имейдж моего проекта
