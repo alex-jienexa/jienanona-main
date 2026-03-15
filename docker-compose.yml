@@ -20,6 +20,7 @@ services:
     depends_on:
       # Сервис не запустится когда не запустятся эти сервисы - лучше писать все сторонние проекты
       - cool_project
+      - foundry
   
   foundry:
     image: node:25
@@ -29,6 +30,8 @@ services:
       # Данные хранятся на сервере
       - /root/foundry/app:/app
       - /root/foundry/data:/data
+    networks:
+    - nonanet
 
   # Заглушка пока я не сделаю нормальный сторонний проект
   cool_project:
